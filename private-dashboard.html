@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Scheduler Dashboard</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background:#020617; color:#fff; font-family:Arial,sans-serif; margin:0; }
+    .wrap { max-width:980px; margin:30px auto; padding:20px; }
+    .card { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:16px; margin-bottom:16px; }
+    input, textarea, button { width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.05); color:#fff; }
+    textarea { min-height:90px; }
+    button { cursor:pointer; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th, td { border-bottom:1px solid rgba(255,255,255,.1); padding:8px; text-align:left; }
+    .row { display:grid; grid-template-columns:1fr 160px 160px; gap:10px; }
+    .muted { color:#94a3b8; font-size:13px; }
+    .ok { color:#34d399; }
+    .err { color:#fda4af; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Private Chatbot Scheduler</h1>
+    <p class="muted">Vetëm për përdorim privat. Format komande: <strong>Postoje 2026-05-20 10:30 | Titulli | Përmbajtja</strong> ose <strong>Postoje sot ora 10:30 | ...</strong></p>
+
+    <div class="card" id="loginCard">
+      <h3>Hyrje private</h3>
+      <input type="password" id="privateKey" placeholder="PRIVATE_DASHBOARD_KEY">
+      <button id="loginBtn" style="margin-top:10px;">Kyçu</button>
+      <p id="loginMsg" class="muted"></p>
+    </div>
+
+    <div id="app" style="display:none;">
+      <div class="card">
+        <h3>Komanda për publikim</h3>
+        <textarea id="prompt" placeholder="Postoje 2026-05-20 10:30 | Takimi me prindër | Ju njoftojmë se..."></textarea>
+        <div class="row" style="margin-top:10px;">
+          <button id="scheduleBtn">Ruaj në orar</button>
+          <button id="publishDueBtn">Publiko tani ato që kanë afat</button>
+          <button id="logoutBtn">Dil</button>
+        </div>
+        <p id="actionMsg" class="muted"></p>
+      </div>
+
+      <div class="card">
+        <h3>Krijo postim me formë (me foto)</h3>
+        <div class="row" style="grid-template-columns:1fr 1fr; margin-bottom:10px;">
+          <input type="text" id="manualTitle" placeholder="Titulli">
+          <input type="text" id="manualPublishAt" placeholder="YYYY-MM-DD HH:MM">
+        </div>
+        <textarea id="manualContent" placeholder="Përmbajtja e njoftimit"></textarea>
+        <div class="row" style="grid-template-columns:1fr 1fr 1fr; margin-top:10px;">
+          <select id="manualAudience">
+            <option value="all">Të gjithë</option>
+            <option value="parents">Prindër</option>
+            <option value="students">Nxënës</option>
+            <option value="teachers">Profesorë</option>
+          </select>
+          <input type="file" id="manualImage" accept="image/*">
+          <button id="manualCreateBtn">Ruaj postimin</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Postimet e planifikuara</h3>
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Titulli</th><th>Publish At</th><th>Status</th><th>Published At</th></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="private-dashboard.js"></script>
+</body>
+</html>

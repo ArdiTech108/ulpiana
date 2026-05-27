@@ -1,0 +1,18 @@
+# Fshi aksesin në skedarë të fshehtë ose sensitivë si .env, .git, etj.
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Fshi aksesin në skedarë specifikë mbrojtës
+<FilesMatch "(?i)\.(env|log|sql|ini|bak|md|json)$">
+    Require all denied
+</FilesMatch>
+
+# Çaktivizo indeksimin e direktorive (directory listing)
+Options -Indexes
+
+# Mbrojtja bazë XSS dhe konfigurime të tjera shtesë nga sulmet iframe
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+</IfModule>

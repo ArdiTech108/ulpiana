@@ -1,0 +1,7 @@
+{
+    "name": "ulpiana/gjimnazi",
+    "description": "Gjimnazi Ulpiana Booking System",
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
+}
