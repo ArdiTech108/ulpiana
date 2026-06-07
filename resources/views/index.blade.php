@@ -93,16 +93,26 @@
               <a href="#ballina" class="nav-link active">Ballina</a> 
               <a href="#statistikat" class="nav-link">Statistikat</a> 
                 <a href="#historia" class="nav-link">Historia</a>
-                <a href="#drejtimet" class="nav-link">Drejtimet</a>
-                <a href="#regjistrimi" class="nav-link">Regjistrimi</a>
                 <a href="#takimet" class="nav-link">Takimet</a>
                 <a href="#galeria" class="nav-link">Galeria</a>
-                <a href="#lajmet" class="nav-link">Lajmet</a>
                 <a href="#announcements" class="nav-link">Njoftime</a>
-                <a href="#safeguarding" class="nav-link">Raporto</a>
                 <a href="#burimet" class="nav-link">Burime</a>
                 <a href="#kontakti" class="nav-link">Kontakti</a>
+
+                <!-- Dropdown: Të tjera -->
+                <div class="nav-dropdown" id="navDropdown">
+                    <button class="nav-link nav-dropdown-btn" id="navDropdownBtn" aria-expanded="false">
+                        Të tjera <i class="fa-solid fa-chevron-down nav-dropdown-arrow"></i>
+                    </button>
+                    <div class="nav-dropdown-menu" id="navDropdownMenu">
+                        <a href="#drejtimet" class="nav-dropdown-item"><i class="fa-solid fa-route"></i> Drejtimet</a>
+                        <a href="#regjistrimi" class="nav-dropdown-item"><i class="fa-solid fa-user-plus"></i> Regjistrimi</a>
+                        <a href="#lajmet" class="nav-dropdown-item"><i class="fa-solid fa-newspaper"></i> Lajmet</a>
+                        <a href="#safeguarding" class="nav-dropdown-item"><i class="fa-solid fa-flag"></i> Raporto</a>
+                    </div>
+                </div>
             </div>
+
 
             <div class="nav-actions">
                 <button id="navAuthBtn" class="btn btn-login" onclick="handleAuthAction()">
@@ -131,22 +141,56 @@
     </div>
 
 
-    <!-- Mobile Menu -->
+    <!-- Mobile Menu (Redesigned) -->
     <div class="mobile-menu" id="mobileMenu">
-        <a href="#ballina" class="mobile-link">Ballina</a>
-         <a href="#statistikat" class="mobile-link">Statistikat</a>
-        <a href="#historia" class="mobile-link">Historia</a>
-        <a href="#drejtimet" class="mobile-link">Drejtimet</a>
-        <a href="#regjistrimi" class="mobile-link">Regjistrimi</a>
-        <a href="#takimet" class="mobile-link">Takimet</a>
-        <a href="#galeria" class="mobile-link">Galeria</a>
-         <a href="#lajmet" class="mobile-link">Lajmet</a>
-         <a href="#announcements" class="mobile-link">Njoftime</a>
-         <a href="#safeguarding" class="mobile-link">Raporto</a>
-         <a href="#burimet" class="mobile-link">Burime</a>
-         <a href="#kontakti" class="mobile-link">Kontakti</a>
-        <button id="mobileAuthBtn" class="btn btn-primary w-100 mt-4" onclick="handleAuthAction()">Kyçu / Regjistrohu</button>
+        <!-- Header -->
+        <div class="mm-header">
+            <div class="mm-brand">
+                <img src="assets/logo.png" alt="Logo" style="width:34px;height:34px;object-fit:contain;border-radius:8px;">
+                <div>
+                    <div style="font-weight:700;font-size:0.95rem;line-height:1.1;">Gjimnazi <strong>Ulpiana</strong></div>
+                    <div style="font-size:0.6rem;color:var(--text-secondary);letter-spacing:1.5px;text-transform:uppercase;">Lipjan</div>
+                </div>
+            </div>
+            <button class="mm-close" id="mmClose" aria-label="Mbyll menunë">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Scrollable links -->
+        <div class="mm-body">
+
+            <div class="mm-section-label">Kryesore</div>
+            <a href="#ballina"     class="mm-link"><span class="mm-icon"><i class="fa-solid fa-house"></i></span>Ballina</a>
+            <a href="#statistikat" class="mm-link"><span class="mm-icon"><i class="fa-solid fa-chart-bar"></i></span>Statistikat</a>
+            <a href="#historia"    class="mm-link"><span class="mm-icon"><i class="fa-solid fa-landmark"></i></span>Historia</a>
+
+            <div class="mm-divider"></div>
+            <div class="mm-section-label">Shkolla</div>
+            <a href="#drejtimet"   class="mm-link"><span class="mm-icon"><i class="fa-solid fa-route"></i></span>Drejtimet</a>
+            <a href="#regjistrimi" class="mm-link"><span class="mm-icon"><i class="fa-solid fa-user-plus"></i></span>Regjistrimi</a>
+            <a href="#takimet"     class="mm-link"><span class="mm-icon"><i class="fa-solid fa-calendar-check"></i></span>Takimet</a>
+            <a href="#galeria"     class="mm-link"><span class="mm-icon"><i class="fa-solid fa-images"></i></span>Galeria</a>
+
+            <div class="mm-divider"></div>
+            <div class="mm-section-label">Informacione</div>
+            <a href="#lajmet"        class="mm-link"><span class="mm-icon"><i class="fa-solid fa-newspaper"></i></span>Lajmet</a>
+            <a href="#announcements" class="mm-link"><span class="mm-icon"><i class="fa-solid fa-bell"></i></span>Njoftime</a>
+            <a href="#burimet"       class="mm-link"><span class="mm-icon"><i class="fa-solid fa-folder-open"></i></span>Burime</a>
+            <a href="#safeguarding"  class="mm-link mm-link-warn"><span class="mm-icon mm-icon-warn"><i class="fa-solid fa-flag"></i></span>Raporto</a>
+            <a href="#kontakti"      class="mm-link"><span class="mm-icon"><i class="fa-solid fa-envelope"></i></span>Kontakti</a>
+        </div>
+
+        <!-- Footer CTA -->
+        <div class="mm-footer">
+            <button id="mobileAuthBtn" class="btn btn-primary w-100" onclick="handleAuthAction()" style="border-radius:14px;padding:14px;">
+                <i class="fa-regular fa-user"></i> Kyçu / Regjistrohu
+            </button>
+        </div>
     </div>
+    <!-- Overlay -->
+    <div class="mm-overlay" id="mmOverlay"></div>
+
 
     <main>
         <!-- Hero Section -->
@@ -205,15 +249,15 @@
                             <div class="news-mini-card">
                                 <div class="news-date">10 MAJ</div>
                                 <div class="news-body">
-                                    <h4>Vizita në CERN - Gjenevë</h4>
-                                    <p>Nxënësit e drejtimit natyror vizitojnë qendrën më të madhe shkencore në botë.</p>
+                                    <h4>Vizita ne Rashnice ne Shtime</h4>
+                                    <p>Nxënësit e drejtimit natyror vizitojnë qendrën më të madhe shkencore astronomike ne Kosove ne Rashnice.</p>
                                 </div>
                                 <i class="fa-solid fa-chevron-right"></i>
                             </div>
                             <div class="news-mini-card active">
                                 <div class="news-date">SOT</div>
                                 <div class="news-body">
-                                    <h4>Prezantimi në Konferencën Emerald</h4>
+                                    <h4>Prezantimi në Konferencën</h4>
                                     <p>Platforma jonë digjitale prezantohet si shembull i inovacionit në edukim.</p>
                                 </div>
                                 <i class="fa-solid fa-chevron-right"></i>
@@ -718,13 +762,7 @@
                                     <p>Sistemi i integruar për menaxhimin e tenderave, kontratave dhe planeve strategjike të shkollës.</p>
                                 </div>
                             </div>
-                            <div class="eco-item">
-                                <i class="fa-solid fa-mobile-screen-button"></i>
-                                <div>
-                                    <h4>PWA (Progressive Web App)</h4>
-                                    <p>Platforma funksionon si aplikacion nativ në çdo pajisje mobile, edhe pa internet.</p>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                     
@@ -823,6 +861,47 @@
                         </div>
                     @empty
                         <p style="color:var(--text-secondary); text-align:center; grid-column:1/-1;">Nuk ka ngjarje të planifikuara për momentin.</p>
+                    @endforelse
+                </div>
+            </div>
+        </section>
+        <!-- Public Leaderboard Section -->
+        <section class="faq-section relative reveal" style="padding: 80px 0;">
+            <div class="container">
+                <div class="section-header" style="text-align: center; margin-bottom: 50px;">
+                    <span class="section-badge">🏆 Ekselencë Akademike</span>
+                    <h2 class="section-title">Nxënësit Tanë <span class="gradient-text">të Shkëlqyer</span></h2>
+                    <p class="section-desc">Studentët me arritjet më të larta akademike për këtë periudhë.</p>
+                </div>
+                <div style="max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px;">
+                    @forelse($leaderboard as $i => $entry)
+                        @php
+                            $medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+                            $medal  = $medals[$i] ?? ('#'.($i+1));
+                            $avg    = number_format($entry->avg_grade, 2);
+                            $bar    = min(100, ($entry->avg_grade / 5) * 100);
+                            $colors = ['linear-gradient(135deg,rgba(255,215,0,0.12),rgba(255,215,0,0.04))','linear-gradient(135deg,rgba(192,192,192,0.12),rgba(192,192,192,0.04))','linear-gradient(135deg,rgba(205,127,50,0.12),rgba(205,127,50,0.04))'];
+                            $bg     = $colors[$i] ?? 'rgba(255,255,255,0.03)';
+                            $border = $i < 3 ? ['rgba(255,215,0,0.3)','rgba(192,192,192,0.3)','rgba(205,127,50,0.3)'][$i] : 'rgba(255,255,255,0.08)';
+                        @endphp
+                        <div class="glass-panel" style="background: {{ $bg }}; border: 1px solid {{ $border }}; border-radius: 18px; padding: 20px 28px; display: flex; align-items: center; gap: 20px;">
+                            <div style="font-size: {{ $i < 3 ? '2.4rem' : '1.4rem' }}; min-width: 50px; text-align: center;">{{ $medal }}</div>
+                            <div style="flex: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                    <span style="color: white; font-weight: 700; font-size: 1.1rem; font-family: var(--font-heading);">{{ $entry->student_name }}</span>
+                                    <span style="color: #10b981; font-weight: 800; font-size: 1.2rem;">Mesatarja: {{ $avg }}</span>
+                                </div>
+                                <div style="height: 7px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden;">
+                                    <div style="height: 100%; width: {{ $bar }}%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 10px;"></div>
+                                </div>
+                                <p style="color: var(--text-secondary); font-size: 0.82rem; margin-top: 6px;">{{ $entry->total_grades }} lëndë të vlerësuara</p>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="glass-panel" style="padding: 50px; text-align: center; color: var(--text-secondary); border-radius: 18px;">
+                            <i class="fa-solid fa-trophy" style="font-size: 3rem; opacity: 0.3; display: block; margin-bottom: 15px;"></i>
+                            <p>Rezultatet do të shfaqen sapo notat të publikohen nga mësimdhënësit.</p>
+                        </div>
                     @endforelse
                 </div>
             </div>
@@ -998,11 +1077,7 @@
             <div class="container">
                 <div class="partners-wrap">
                     <p class="partners-label">MBËSHTETUR DHE REKOMANDUAR NGA:</p>
-                    <div class="partners-grid">
-                        <div class="partner-logo">
-                            <i class="fa-solid fa-building-columns"></i>
-                            <span>Ministria e Arsimit</span>
-                        </div>
+                    <div class="partners-grid" style="justify-content: center; display: flex; gap: 30px;">
                         <div class="partner-logo">
                             <i class="fa-solid fa-hands-holding-child"></i>
                             <span>UNICEF Kosovo</span>
@@ -1010,10 +1085,6 @@
                         <div class="partner-logo">
                             <i class="fa-solid fa-graduation-cap"></i>
                             <span>KEC (Kosovo Education Center)</span>
-                        </div>
-                        <div class="partner-logo">
-                            <i class="fa-solid fa-landmark"></i>
-                            <span>Komuna e Lipjanit</span>
                         </div>
                     </div>
                 </div>
@@ -1191,7 +1262,115 @@
 
 
     <script>
+    // --- Dropdown "Të tjera" ---
+    (function() {
+        const btn  = document.getElementById('navDropdownBtn');
+        const menu = document.getElementById('navDropdownMenu');
+        if (!btn || !menu) return;
+
+        function toggleDropdown(force) {
+            const isOpen = btn.classList.contains('open');
+            const shouldOpen = (force !== undefined) ? force : !isOpen;
+            btn.classList.toggle('open', shouldOpen);
+            menu.classList.toggle('open', shouldOpen);
+            btn.setAttribute('aria-expanded', shouldOpen);
+        }
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleDropdown();
+        });
+
+        // Close when clicking a link inside
+        menu.querySelectorAll('.nav-dropdown-item').forEach(function(link) {
+            link.addEventListener('click', function() {
+                toggleDropdown(false);
+            });
+        });
+
+        // Close when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('navDropdown').contains(e.target)) {
+                toggleDropdown(false);
+            }
+        });
+
+        // Close on Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') toggleDropdown(false);
+        });
+    })();
+    </script>
+
+    <script>
 (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="Bqul37N0dVo5PdxiGzuiP";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
 </script>
+
+<!-- Credits Footer -->
+<footer style="
+    background: linear-gradient(135deg, rgba(3,7,18,0.98), rgba(15,23,42,0.98));
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 28px 20px 22px;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    margin-top: 0;
+">
+    <!-- Disclaimer -->
+    <p style="
+        margin: 0 auto 18px;
+        max-width: 620px;
+        color: rgba(255,255,255,0.38);
+        font-size: 0.72rem;
+        line-height: 1.65;
+        letter-spacing: 0.01em;
+    ">
+        Kjo uebfaqe është zhvilluar në kuadër të programit <strong style="color:rgba(255,255,255,0.55);">TechSolution</strong>.
+        I financuar nga <strong style="color:rgba(255,255,255,0.55);">Agjencia Austriake për Zhvillim</strong> në partneritet me
+        <strong style="color:rgba(255,255,255,0.55);">UNICEF</strong> në Kosovë dhe i zbatuar nga
+        <strong style="color:rgba(255,255,255,0.55);">Qendra për Arsim të Kosovës (KEC)</strong>.
+    </p>
+
+    <!-- Divider -->
+    <div style="width:40px; height:1px; background:rgba(255,255,255,0.1); margin:0 auto 14px;"></div>
+
+    <!-- Author -->
+    <p style="margin:0 0 5px 0; color: rgba(255,255,255,0.75); font-size: 0.82rem; font-weight: 600; letter-spacing: 0.03em;">
+        Autor: <span style="color:#a78bfa;">Ardi Jashanica</span>
+    </p>
+    <!-- Contributors -->
+    <p style="margin:0; color: rgba(255,255,255,0.4); font-size: 0.75rem; letter-spacing: 0.02em;">
+        Ndihmes:
+        <span style="color: rgba(255,255,255,0.6);">Eris Thaqi</span> &nbsp;·&nbsp;
+        <span style="color: rgba(255,255,255,0.6);">Donat Mehmeti</span> &nbsp;·&nbsp;
+        <span style="color: rgba(255,255,255,0.6);">Naza Imeri</span> &nbsp;·&nbsp;
+        <span style="color: rgba(255,255,255,0.6);">Ajla Llugiqi</span>
+    </p>
+</footer>
+
+    <!-- Accessibility Widget -->
+    <div class="a11y-widget">
+        <div class="a11y-menu" id="a11yMenu">
+            <h4><i class="fa-solid fa-universal-access"></i> Aksesueshmëria</h4>
+            <div class="a11y-option" onclick="toggleA11y('a11y-large-text', this)">
+                <i class="fa-solid fa-magnifying-glass-plus"></i> Zmadho Shkronjat
+            </div>
+            <div class="a11y-option" onclick="toggleA11y('a11y-high-contrast', this)">
+                <i class="fa-solid fa-circle-half-stroke"></i> Kontrast i Lartë
+            </div>
+            <div class="a11y-option" onclick="toggleA11y('a11y-highlight-links', this)">
+                <i class="fa-solid fa-link"></i> Thekso Linqet
+            </div>
+        </div>
+        <div class="a11y-btn" onclick="document.getElementById('a11yMenu').classList.toggle('show')">
+            <i class="fa-solid fa-wheelchair"></i>
+        </div>
+    </div>
+
+    <script>
+        function toggleA11y(className, el) {
+            document.body.classList.toggle(className);
+            el.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>

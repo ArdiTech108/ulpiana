@@ -7,6 +7,7 @@ use App\Models\Grade;
 use App\Models\Announcement;
 use App\Models\Resource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StudentDashboardController extends Controller
 {
@@ -42,6 +43,18 @@ class StudentDashboardController extends Controller
         $resources = Resource::orderBy('created_at', 'desc')->get();
         $announcements = Announcement::orderBy('created_at', 'desc')->get();
 
-        return view('student-dashboard', compact('user', 'grades', 'resources', 'announcements'));
+        // Leaderboard: Top 10 students by average grade (SQLite compatible)
+        $allGradesLb = Grade::where('is_published', 1)->get();
+        $leaderboard = $allGradesLb->filter(fn($g) => is_numeric(trim($g->grade_value)))
+            ->groupBy('student_name')
+            ->map(function ($grades, $name) {
+                $avg = $grades->avg(fn($g) => floatval(trim($g->grade_value)));
+                return (object)['student_name' => $name, 'avg_grade' => $avg, 'total_grades' => $grades->count()];
+            })
+            ->sortByDesc('avg_grade')
+            ->take(10)
+            ->values();
+
+        return view('student-dashboard', compact('user', 'grades', 'resources', 'announcements', 'leaderboard'));
     }
 }

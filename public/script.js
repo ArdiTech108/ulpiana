@@ -1,10 +1,24 @@
-// --- Custom Cursor (Disabled for performance) ---
-
 // --- Navigation & Scroll ---
-const navbar = document.getElementById('navbar');
+const navbar    = document.getElementById('navbar');
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
-const navLinks = document.querySelectorAll('.nav-link');
+const mmOverlay  = document.getElementById('mmOverlay');
+const mmClose    = document.getElementById('mmClose');
+const navLinks   = document.querySelectorAll('.nav-link');
+
+function openMobileMenu() {
+    mobileMenu && mobileMenu.classList.add('active');
+    mmOverlay  && mmOverlay.classList.add('active');
+    hamburger  && hamburger.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeMobileMenu() {
+    mobileMenu && mobileMenu.classList.remove('active');
+    mmOverlay  && mmOverlay.classList.remove('active');
+    hamburger  && hamburger.classList.remove('active');
+    document.body.style.overflow = '';
+}
 
 let scrollRaf = null;
 window.addEventListener('scroll', () => {
@@ -21,19 +35,19 @@ window.addEventListener('scroll', () => {
     }
 }, { passive: true });
 
-if (hamburger && mobileMenu) {
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        mobileMenu.classList.toggle('active');
-    });
-}
+if (hamburger) hamburger.addEventListener('click', openMobileMenu);
+if (mmClose)   mmClose.addEventListener('click', closeMobileMenu);
+if (mmOverlay) mmOverlay.addEventListener('click', closeMobileMenu);
 
-document.querySelectorAll('.mobile-link').forEach(link => {
-    link.addEventListener('click', () => {
-        if (hamburger) hamburger.classList.remove('active');
-        if (mobileMenu) mobileMenu.classList.remove('active');
-    });
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileMenu(); });
+
+// Close when any mm-link is clicked
+document.querySelectorAll('.mm-link').forEach(link => {
+    link.addEventListener('click', closeMobileMenu);
 });
+
+
 
 function updateActiveLinks() {
     let current = '';
@@ -48,8 +62,11 @@ function updateActiveLinks() {
 
     navLinks.forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href').includes(current)) {
+        const href = link.getAttribute('href') || '';
+        if (current && href.includes('#' + current)) {
             link.classList.add('active');
+        } else if (!current && href.includes('#ballina')) {
+            link.classList.add('active'); // Default to home/ballina when at very top
         }
     });
 }

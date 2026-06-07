@@ -28,7 +28,7 @@ return new class extends Migration
             
             $table->unique(['teacher_id', 'slot_time'], 'uq_teacher_slot');
             $table->index(['teacher_id', 'slot_time'], 'idx_teacher_time');
-            $table->index('status', 'idx_status');
+            $table->index('status', 'idx_bookings_status');
         });
 
         Schema::create('teacher_settings', function (Blueprint $table) {
@@ -62,7 +62,7 @@ return new class extends Migration
             $table->unsignedBigInteger('created_by_user_id')->nullable();
             $table->timestamp('created_at')->useCurrent();
             
-            $table->index('created_at', 'idx_created_at');
+            $table->index('created_at', 'idx_announcements_created_at');
         });
 
         Schema::create('safeguarding_reports', function (Blueprint $table) {
@@ -76,8 +76,8 @@ return new class extends Migration
             $table->unsignedBigInteger('assigned_to_user_id')->nullable();
             $table->timestamps();
             
-            $table->index('status', 'idx_status');
-            $table->index('created_at', 'idx_created_at');
+            $table->index('status', 'idx_safeguarding_status');
+            $table->index('created_at', 'idx_safeguarding_created_at');
         });
 
         Schema::create('password_resets', function (Blueprint $table) {
@@ -104,7 +104,7 @@ return new class extends Migration
             
             $table->index('actor_user_id', 'idx_actor');
             $table->index('action_name', 'idx_action');
-            $table->index('created_at', 'idx_created_at');
+            $table->index('created_at', 'idx_audit_created_at');
         });
 
         Schema::create('scheduled_posts', function (Blueprint $table) {
@@ -120,7 +120,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             
             $table->index('publish_at', 'idx_publish_at');
-            $table->index('status', 'idx_status');
+            $table->index('status', 'idx_scheduled_posts_status');
         });
 
         Schema::create('resources', function (Blueprint $table) {
@@ -133,7 +133,7 @@ return new class extends Migration
             
             $table->index('category', 'idx_category');
             $table->index('uploaded_by_user_id', 'idx_uploaded_by');
-            $table->index('created_at', 'idx_created_at');
+            $table->index('created_at', 'idx_resources_created_at');
         });
 
         Schema::create('events', function (Blueprint $table) {

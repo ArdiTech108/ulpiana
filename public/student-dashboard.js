@@ -43,9 +43,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             panels.forEach(p => p.classList.remove('active'));
             document.getElementById(`view-${view}`).classList.add('active');
 
-            if (view === 'grades') { viewTitle.innerText = 'Notat e Mia'; viewDesc.innerText = 'Suksesi juaj akademik'; /* loadGrades(); */ }
-            if (view === 'resources') { viewTitle.innerText = 'Libraria Digjitale'; viewDesc.innerText = 'Materiale mësimore për shkarkim'; /* loadResources(); */ }
-            if (view === 'news') { viewTitle.innerText = 'Njoftimet'; viewDesc.innerText = 'Lajmet e fundit nga shkolla'; /* loadNews(); */ }
+            if (view === 'grades') { viewTitle.innerText = 'Notat e Mia'; viewDesc.innerText = 'Suksesi juaj akademik'; }
+            if (view === 'resources') { viewTitle.innerText = 'Libraria Digjitale'; viewDesc.innerText = 'Materiale mësimore për shkarkim'; }
+            if (view === 'news') { viewTitle.innerText = 'Njoftimet'; viewDesc.innerText = 'Lajmet e fundit nga shkolla'; }
+            if (view === 'idcard') { viewTitle.innerText = 'ID Dixhitale'; viewDesc.innerText = 'Karta juaj zyrtare'; }
+            if (view === 'leaderboard') { viewTitle.innerText = 'Tabela Kryesore 🏆'; viewDesc.innerText = 'Top 10 nxënësit me mesataren më të lartë'; }
         });
     });
 

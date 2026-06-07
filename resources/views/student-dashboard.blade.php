@@ -71,6 +71,8 @@
             <li><a href="#" class="active" data-view="grades"><i class="fa-solid fa-graduation-cap"></i> Notat e Mia</a></li>
             <li><a href="#" data-view="resources"><i class="fa-solid fa-book"></i> Libraria Digjitale</a></li>
             <li><a href="#" data-view="news"><i class="fa-solid fa-newspaper"></i> Njoftimet</a></li>
+            <li><a href="#" data-view="idcard"><i class="fa-solid fa-id-card"></i> ID Dixhitale</a></li>
+            <li><a href="#" data-view="leaderboard"><i class="fa-solid fa-trophy"></i> Tabela Kryesore</a></li>
         </ul>
         <button class="btn logout-btn w-100" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Dil</button>
     </aside>
@@ -138,8 +140,107 @@
                 @endforelse
             </div>
         </section>
+
+        <!-- Digital ID Card Section -->
+        <section class="view-panel" id="view-idcard">
+            <div style="display: flex; justify-content: center; align-items: center; min-height: 50vh;">
+                <div style="background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; width: 100%; max-width: 400px; padding: 30px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.4); backdrop-filter: blur(10px);">
+                    <!-- Decorative header -->
+                    <div style="position: absolute; top: 0; left: 0; right: 0; height: 8px; background: linear-gradient(90deg, #10b981, #059669);"></div>
+                    
+                    <div style="text-align: center; margin-bottom: 25px;">
+                        <img src="assets/logo.png" alt="Ulpiana Logo" style="width: 50px; margin-bottom: 10px;">
+                        <h3 style="color: white; font-family: var(--font-heading); margin: 0; letter-spacing: 1px;">GJIMNAZI ULPIANA</h3>
+                        <p style="color: var(--accent); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; margin-top: 3px;">Karta Dixhitale e Nxënësit</p>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                        <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #059669); color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; border: 4px solid rgba(255,255,255,0.1);">
+                            {{ $initials }}
+                        </div>
+                        
+                        <div style="text-align: center; width: 100%;">
+                            <h2 style="color: white; margin: 0 0 5px 0; font-size: 1.6rem;">{{ $user->full_name }}</h2>
+                            <p style="color: var(--text-secondary); margin: 0 0 15px 0; font-size: 0.95rem;">ID: #ULP-{{ str_pad($user->id, 4, '0', STR_PAD_LEFT) }}</p>
+                            
+                            <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 15px; display: inline-block;">
+                                <!-- Live QR Code specific to user -->
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Ulpiana_Student_{{ $user->id }}_{{ md5($user->email) }}&color=10b981&bgcolor=0f172a" alt="QR Code" style="border-radius: 8px;">
+                            </div>
+                            <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 15px;">Skano për akses në bibliotekë & hyrje</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section class="view-panel" id="view-leaderboard">
+            <div style="max-width: 650px; margin: 0 auto;">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">🏆</div>
+                    <h2 style="color: white; font-family: var(--font-heading); margin: 0;">Top 10 Nxënësit</h2>
+                    <p style="color: var(--text-secondary); margin-top: 8px;">Bazuar në mesataren e notave të publikuara</p>
+                </div>
+
+                @php $rank = 1; @endphp
+                @forelse($leaderboard as $entry)
+                    @php
+                        $isMe = strtolower(trim($entry->student_name)) === strtolower(trim($user->full_name));
+                        $medal = $rank === 1 ? '🥇' : ($rank === 2 ? '🥈' : ($rank === 3 ? '🥉' : '#' . $rank));
+                        $avgFormatted = number_format($entry->avg_grade, 2);
+                        $barWidth = min(100, ($entry->avg_grade / 5) * 100);
+                    @endphp
+                    <div style="background: {{ $isMe ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.03)' }}; border: 1px solid {{ $isMe ? 'rgba(16,185,129,0.5)' : 'rgba(255,255,255,0.08)' }}; border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; display: flex; align-items: center; gap: 18px; transition: transform 0.2s;" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
+                        <div style="font-size: {{ $rank <= 3 ? '2rem' : '1.2rem' }}; min-width: 40px; text-align: center; font-weight: 800; color: {{ $rank <= 3 ? 'white' : 'var(--text-secondary)' }};">{{ $medal }}</div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="color: white; font-weight: 600; font-size: 1rem;">{{ $isMe ? '⭐ ' . $entry->student_name . ' (Unë)' : $entry->student_name }}</span>
+                                <span style="color: var(--accent); font-weight: 800; font-size: 1.1rem;">{{ $avgFormatted }}</span>
+                            </div>
+                            <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; width: {{ $barWidth }}%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 10px; transition: width 1s ease;"></div>
+                            </div>
+                            <div style="margin-top: 5px; color: var(--text-secondary); font-size: 0.8rem;">{{ $entry->total_grades }} lëndë të vlerësuara</div>
+                        </div>
+                    </div>
+                    @php $rank++; @endphp
+                @empty
+                    <div style="text-align: center; padding: 60px 0; color: var(--text-secondary);">
+                        <i class="fa-solid fa-trophy" style="font-size: 3rem; opacity: 0.3; margin-bottom: 15px;"></i>
+                        <p>Nuk ka të dhëna të mjaftueshme për tabelën kryesore.</p>
+                    </div>
+                @endforelse
+            </div>
+        </section>
     </main>
 
     <script src="student-dashboard.js"></script>
+    
+    <!-- Accessibility Widget -->
+    <div class="a11y-widget">
+        <div class="a11y-menu" id="a11yMenu">
+            <h4><i class="fa-solid fa-universal-access"></i> Aksesueshmëria</h4>
+            <div class="a11y-option" onclick="toggleA11y('a11y-large-text', this)">
+                <i class="fa-solid fa-magnifying-glass-plus"></i> Zmadho Shkronjat
+            </div>
+            <div class="a11y-option" onclick="toggleA11y('a11y-high-contrast', this)">
+                <i class="fa-solid fa-circle-half-stroke"></i> Kontrast i Lartë
+            </div>
+            <div class="a11y-option" onclick="toggleA11y('a11y-highlight-links', this)">
+                <i class="fa-solid fa-link"></i> Thekso Linqet
+            </div>
+        </div>
+        <div class="a11y-btn" onclick="document.getElementById('a11yMenu').classList.toggle('show')">
+            <i class="fa-solid fa-wheelchair"></i>
+        </div>
+    </div>
+
+    <script>
+        function toggleA11y(className, el) {
+            document.body.classList.toggle(className);
+            el.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>

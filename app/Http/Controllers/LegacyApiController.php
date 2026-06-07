@@ -438,9 +438,42 @@ class LegacyApiController extends Controller
                     Announcement::create([
                         'title' => trim($in['title'] ?? ''),
                         'content' => trim($in['content'] ?? ''),
+                        'audience' => trim($in['audience'] ?? 'all'),
                         'created_by_user_id' => $user['id'],
                     ]);
 
+                    return response()->json(['ok' => true]);
+
+                case 'update_announcement':
+                    if ($method !== 'POST') break;
+                    $user = session('user');
+                    if (!$user || !in_array($user['role'], ['teacher', 'admin'])) {
+                        return response()->json(['ok' => false, 'message' => 'Forbidden'], 403);
+                    }
+
+                    $in = $request->json()->all();
+                    $ann = Announcement::find($in['id'] ?? 0);
+                    if ($ann) {
+                        $ann->update([
+                            'title' => trim($in['title'] ?? ''),
+                            'content' => trim($in['content'] ?? ''),
+                            'audience' => trim($in['audience'] ?? 'all'),
+                        ]);
+                    }
+                    return response()->json(['ok' => true]);
+
+                case 'delete_announcement':
+                    if ($method !== 'POST') break;
+                    $user = session('user');
+                    if (!$user || !in_array($user['role'], ['teacher', 'admin'])) {
+                        return response()->json(['ok' => false, 'message' => 'Forbidden'], 403);
+                    }
+
+                    $in = $request->json()->all();
+                    $ann = Announcement::find($in['id'] ?? 0);
+                    if ($ann) {
+                        $ann->delete();
+                    }
                     return response()->json(['ok' => true]);
 
                 // --- RESOURCES ---

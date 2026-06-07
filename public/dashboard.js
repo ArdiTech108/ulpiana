@@ -323,23 +323,119 @@ window.toggleGrade = toggleGrade;
 
 async function initAnnouncementsSection() {
   const btn = document.getElementById('saveAnnouncementBtn');
+  const annContent = document.getElementById('annContent');
+  const annCharCount = document.getElementById('annCharCount');
+  const annSearch = document.getElementById('annSearch');
+
+  if (annContent && annCharCount) {
+    annContent.addEventListener('input', () => {
+      annCharCount.innerText = `${annContent.value.length} / 2000`;
+    });
+  }
+
+  if (annSearch) {
+    annSearch.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll('.ann-card').forEach(card => {
+        const title = card.dataset.title.toLowerCase();
+        const content = card.dataset.content.toLowerCase();
+        if (title.includes(q) || content.includes(q)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+
+  // Edit Modal Save button
+  const saveEditBtn = document.getElementById('annSaveEditBtn');
+  if (saveEditBtn) {
+    saveEditBtn.addEventListener('click', async () => {
+      const id = document.getElementById('annEditId').value;
+      const title = document.getElementById('annEditTitle').value;
+      const content = document.getElementById('annEditContent').value;
+      const audience = document.getElementById('annEditAudience').value;
+
+      if (!title || !content) return toast('Plotësoni të gjitha fushat.', 'error');
+
+      try {
+        setBtnLoading(saveEditBtn, true, 'Po ruhet...');
+        await api('update_announcement', 'POST', { id, title, content, audience });
+        toast('Njoftimi u përditësua me sukses.');
+        annCloseModal();
+        // Fallback: Reload page to show changes instead of complex DOM updates
+        window.location.reload(); 
+      } catch (e) { toast(e.message, 'error'); }
+      finally { setBtnLoading(saveEditBtn, false); }
+    });
+  }
+
   if (!btn) return;
   btn.addEventListener('click', async () => {
     const title = document.getElementById('annTitle').value;
     const content = document.getElementById('annContent').value;
+    const audience = document.getElementById('annAudience').value;
+
+    if (!title || !content) return toast('Ju lutem plotësoni titullin dhe përmbajtjen.', 'error');
+
     try {
       setBtnLoading(btn, true);
-      await api('create_announcement', 'POST', { title, content });
-      toast('Njoftimi u dërgua.');
-      loadAnnouncements();
+      await api('create_announcement', 'POST', { title, content, audience });
+      toast('Njoftimi u publikua me sukses.');
+      document.getElementById('annTitle').value = '';
+      document.getElementById('annContent').value = '';
+      if(annCharCount) annCharCount.innerText = '0 / 2000';
+      window.location.reload();
     } catch (e) { toast(e.message, 'error'); }
     finally { setBtnLoading(btn, false); }
   });
-  // loadAnnouncements(); // Pre-populated server-side by Blade
+
+  const countEl = document.getElementById('annCount');
+  if (countEl) {
+    const total = document.querySelectorAll('.ann-card').length;
+    countEl.innerText = total + ' Totali';
+  }
 }
 
+// Global functions for inline onclick handlers
+window.annEdit = function(btn) {
+  const card = btn.closest('.ann-card');
+  document.getElementById('annEditId').value = card.dataset.id;
+  document.getElementById('annEditTitle').value = card.dataset.title;
+  document.getElementById('annEditContent').value = card.dataset.content;
+  document.getElementById('annEditAudience').value = card.dataset.audience;
+  document.getElementById('annEditModal').style.display = 'flex';
+};
+
+window.annCloseModal = function() {
+  document.getElementById('annEditModal').style.display = 'none';
+};
+
+window.annDelete = async function(id, btn) {
+  if (!confirm('A jeni të sigurt që dëshironi të fshini këtë njoftim?')) return;
+  
+  try {
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+    await api('delete_announcement', 'POST', { id });
+    toast('Njoftimi u fshi.');
+    btn.closest('.ann-card').remove();
+    
+    // Update count
+    const countEl = document.getElementById('annCount');
+    if (countEl) {
+      const total = document.querySelectorAll('.ann-card').length;
+      countEl.innerText = total + ' Totali';
+    }
+  } catch (e) { 
+    toast(e.message, 'error'); 
+    btn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+  }
+};
+
 async function loadAnnouncements() {
-  // Logic to load announcements if needed in a table
+  // Logic to load announcements via API is not strictly needed 
+  // since Blade renders them initially and we use window.location.reload()
 }
 
 async function initResourcesSection() {

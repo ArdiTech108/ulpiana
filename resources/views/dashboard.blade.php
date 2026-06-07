@@ -536,6 +536,79 @@
                 width: 100%;
             }
         }
+
+        /* --- Announcements Custom CSS --- */
+        .ann-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+        .ann-card:hover {
+            border-color: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+        }
+        .ann-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .ann-card-title {
+            color: white;
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .ann-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .ann-card-body {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        .ann-badge {
+            font-size: 0.72rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .ann-badge-all { background: rgba(59,130,246,0.15); color: #93c5fd; }
+        .ann-badge-parents { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+        .ann-badge-students { background: rgba(245,158,11,0.15); color: #fcd34d; }
+        .ann-badge-teachers { background: rgba(139,92,246,0.15); color: #c4b5fd; }
+        
+        .ann-btn-edit, .ann-btn-delete {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ann-btn-edit:hover {
+            background: rgba(59,130,246,0.15);
+            border-color: rgba(59,130,246,0.3);
+            color: #60a5fa;
+        }
+        .ann-btn-delete:hover {
+            background: rgba(239,68,68,0.15);
+            border-color: rgba(239,68,68,0.3);
+            color: #f87171;
+        }
     </style>
 </head>
 <body class="dashboard-body">
@@ -723,28 +796,116 @@
 
             <!-- Announcements Panel -->
             <div id="view-announcements" class="view-panel">
-                <div class="students-toolbar" style="flex-direction:column; align-items:stretch;">
-                    <input type="text" id="annTitle" class="students-search" placeholder="Titulli i Njoftimit">
-                    <textarea id="annContent" class="students-search" placeholder="Përmbajtja e njoftimit..."></textarea>
-                    <button class="btn btn-primary" id="saveAnnouncementBtn">Publiko Njoftimin</button>
-                </div>
-                <div class="students-table-wrap" style="margin-top:20px;">
-                    <table class="students-table">
-                        <thead><tr><th>Titulli</th><th>Përmbajtja</th><th>Data</th></tr></thead>
-                        <tbody id="announcementsTableBody">
+
+                <!-- Two-column layout -->
+                <div style="display:grid; grid-template-columns:380px 1fr; gap:24px; align-items:start;">
+
+                    <!-- LEFT: Add form -->
+                    <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:24px;">
+                        <h3 style="color:white; font-size:1.1rem; margin-bottom:18px; display:flex; align-items:center; gap:10px;">
+                            <i class="fa-solid fa-plus" style="color:var(--primary);"></i> Shto Njoftim të Ri
+                        </h3>
+
+                        <div style="display:flex; flex-direction:column; gap:12px;">
+                            <input type="text" id="annTitle" class="students-search" placeholder="Titulli i njoftimit *" maxlength="180">
+
+                            <div style="position:relative;">
+                                <textarea id="annContent" class="students-search" placeholder="Përmbajtja e njoftimit..." style="min-height:110px; resize:vertical;" maxlength="2000"></textarea>
+                                <span id="annCharCount" style="position:absolute; bottom:8px; right:12px; font-size:0.72rem; color:var(--text-secondary);">0 / 2000</span>
+                            </div>
+
+                            <select id="annAudience" class="students-search" style="background:#1e293b; color:white;">
+                                <option value="all">👥 Të gjithë</option>
+                                <option value="parents">👨‍👩‍👧 Prindërit</option>
+                                <option value="students">🎓 Nxënësit</option>
+                                <option value="teachers">👩‍🏫 Mësimdhënësit</option>
+                            </select>
+
+                            <button class="btn btn-primary" id="saveAnnouncementBtn" style="width:100%; justify-content:center;">
+                                <i class="fa-solid fa-paper-plane"></i> Publiko Njoftimin
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: List -->
+                    <div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                            <h3 style="color:white; font-size:1.1rem; display:flex; align-items:center; gap:10px;">
+                                <i class="fa-solid fa-list" style="color:var(--accent);"></i>
+                                Lista e Njoftimeve
+                                <span id="annCount" style="background:rgba(59,130,246,0.15); color:#93c5fd; font-size:0.75rem; padding:2px 10px; border-radius:20px; font-weight:600;"></span>
+                            </h3>
+                            <input type="text" id="annSearch" placeholder="🔍 Kërko..." style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:white; padding:8px 12px; font-size:0.9rem; width:180px;">
+                        </div>
+
+                        <div id="announcementsTableBody" style="display:flex; flex-direction:column; gap:10px; max-height:62vh; overflow-y:auto; padding-right:4px;">
                             @forelse ($announcements as $a)
-                                <tr>
-                                    <td><strong>{{ $a->title }}</strong></td>
-                                    <td>{{ $a->content }}</td>
-                                    <td>{{ $a->created_at->format('d.m.Y H:i') }}</td>
-                                </tr>
+                            <div class="ann-card" data-id="{{ $a->id }}" data-title="{{ htmlspecialchars($a->title, ENT_QUOTES) }}" data-content="{{ htmlspecialchars($a->content, ENT_QUOTES) }}" data-audience="{{ $a->audience ?? 'all' }}">
+                                <div class="ann-card-header">
+                                    <div>
+                                        <div class="ann-card-title">{{ $a->title }}</div>
+                                        <div class="ann-card-meta">
+                                            <span class="ann-badge ann-badge-{{ $a->audience ?? 'all' }}">
+                                                @switch($a->audience ?? 'all')
+                                                    @case('parents') 👨‍👩‍👧 Prindërit @break
+                                                    @case('students') 🎓 Nxënësit @break
+                                                    @case('teachers') 👩‍🏫 Mësimdhënësit @break
+                                                    @default 👥 Të gjithë
+                                                @endswitch
+                                            </span>
+                                            <span style="color:var(--text-secondary); font-size:0.78rem;">
+                                                <i class="fa-regular fa-clock"></i> {{ $a->created_at->format('d.m.Y H:i') }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div style="display:flex; gap:8px; flex-shrink:0;">
+                                        <button class="ann-btn-edit" onclick="annEdit(this)" title="Edito">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        <button class="ann-btn-delete" onclick="annDelete({{ $a->id }}, this)" title="Fshi">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="ann-card-body">{{ $a->content }}</div>
+                            </div>
                             @empty
-                                <tr><td colspan="3" style="text-align:center; color:var(--text-secondary);">Nuk ka njoftime të publikuara.</td></tr>
+                            <div class="empty-dash" style="padding:50px 0;">
+                                <i class="fa-solid fa-bullhorn"></i>
+                                <h3>Nuk ka njoftime</h3>
+                                <p>Shto njoftimin e parë nga forma në të majtë.</p>
+                            </div>
                             @endforelse
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Modal -->
+                <div id="annEditModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); z-index:9000; align-items:center; justify-content:center;">
+                    <div style="background:#0f172a; border:1px solid rgba(255,255,255,0.12); border-radius:20px; padding:30px; width:min(520px, 92vw); position:relative;">
+                        <button onclick="annCloseModal()" style="position:absolute; top:14px; right:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:white; width:32px; height:32px; border-radius:8px; cursor:pointer; font-size:1rem;">✕</button>
+                        <h3 style="color:white; margin-bottom:20px;"><i class="fa-solid fa-pen-to-square" style="color:var(--primary);"></i> Edito Njoftimin</h3>
+                        <input type="hidden" id="annEditId">
+                        <div style="display:flex; flex-direction:column; gap:12px;">
+                            <input type="text" id="annEditTitle" class="students-search" placeholder="Titulli *" maxlength="180">
+                            <textarea id="annEditContent" class="students-search" placeholder="Përmbajtja..." style="min-height:100px; resize:vertical;" maxlength="2000"></textarea>
+                            <select id="annEditAudience" class="students-search" style="background:#1e293b; color:white;">
+                                <option value="all">👥 Të gjithë</option>
+                                <option value="parents">👨‍👩‍👧 Prindërit</option>
+                                <option value="students">🎓 Nxënësit</option>
+                                <option value="teachers">👩‍🏫 Mësimdhënësit</option>
+                            </select>
+                            <div style="display:flex; gap:10px; margin-top:6px;">
+                                <button class="btn btn-primary" id="annSaveEditBtn" style="flex:1; justify-content:center;">
+                                    <i class="fa-solid fa-check"></i> Ruaj Ndryshimet
+                                </button>
+                                <button class="btn btn-outline-light" onclick="annCloseModal()" style="padding:12px 20px;">Anulo</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
 
             <!-- Resources Panel -->
             <div id="view-resources" class="view-panel">
@@ -960,5 +1121,31 @@
 
     <script src="dashboard.js?v=final"></script>
     <div id="dashToastWrap" class="dash-toast-wrap"></div>
+    
+    <!-- Accessibility Widget -->
+    <div class="a11y-widget">
+        <div class="a11y-menu" id="a11yMenu">
+            <h4><i class="fa-solid fa-universal-access"></i> Aksesueshmëria</h4>
+            <div class="a11y-option" onclick="toggleA11y('a11y-large-text', this)">
+                <i class="fa-solid fa-magnifying-glass-plus"></i> Zmadho Shkronjat
+            </div>
+            <div class="a11y-option" onclick="toggleA11y('a11y-high-contrast', this)">
+                <i class="fa-solid fa-circle-half-stroke"></i> Kontrast i Lartë
+            </div>
+            <div class="a11y-option" onclick="toggleA11y('a11y-highlight-links', this)">
+                <i class="fa-solid fa-link"></i> Thekso Linqet
+            </div>
+        </div>
+        <div class="a11y-btn" onclick="document.getElementById('a11yMenu').classList.toggle('show')">
+            <i class="fa-solid fa-wheelchair"></i>
+        </div>
+    </div>
+
+    <script>
+        function toggleA11y(className, el) {
+            document.body.classList.toggle(className);
+            el.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
